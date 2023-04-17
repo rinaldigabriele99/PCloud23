@@ -1,0 +1,3 @@
+Installare git sul computer
+Aprire dalla cartella locale sul PC personale il terminale e scrivere 'git clone' e l'url che si prende da Github nella sezione del progetto da 'Code'. 
+così collego github alla cartella del computer
