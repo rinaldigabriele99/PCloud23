@@ -1,4 +1,4 @@
-Aprendo il terminale dalla cartella locale: 
+gitAprendo il terminale dalla cartella locale: 
 'git help' mostra tutti i comandi che si possono usare nel terminale
 'git pull' scarico tutti gli aggiornamenti dal sito Github
 
