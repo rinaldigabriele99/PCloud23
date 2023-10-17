@@ -1,0 +1,9 @@
+gitAprendo il terminale dalla cartella locale: 
+git help -> mostra tutti i comandi che si possono usare nel terminale
+git pull -> scarico tutti gli aggiornamenti dal sito Github
+
+
+Se creo nuovi file in locale e li voglio caricare sul sito GitHub devo fare i seguenti comandi:
+git add * -> per aggiungere tutti i file nuovi che ho creato
+git commit -m '...' -> messaggio che spiega il commit che stiamo facendo per tenere traccia dell'aggiornamento che stiamo facendo
+git push -> per caricare tutto su GitHub

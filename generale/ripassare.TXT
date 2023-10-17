@@ -1,0 +1,10 @@
+ripassare:
+- applicazione flask per fare server e main
+- ruspberry sensor per capire come leggere i dati (nel nostro caso dal sensore) e inviarli al server (nel nostro caso con publisher)
+
+
+esempio con pubsub:
+- ciclo infinito per prendere le immagini
+- trasformo le immagini in json
+- invio le immagini con pubsub intervallate da un tempo prefissato
+- salvare le immagini/dati in cloud storage
