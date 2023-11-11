@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from google.cloud import firestore
 
 app = Flask(__name__)
 
@@ -13,6 +14,18 @@ def pippo():
 @app.route('/upload',methods=['POST'])
 def upload_data():
     return render_template('login.html', title='Home')
+
+
+
+#configurazione firestore - login
+db = firestore.Client.from_service_account_json('credentials.json')
+
+coll = 'persone'
+
+# creazione di un entity (document)
+entity = db.collection(coll).document('gabrielerinaldi')
+entity.set({'nome':'gabriele','cognome':'rinaldi'})
+
 
 
 if __name__ == '__main__':
