@@ -4,21 +4,15 @@ app = Flask(__name__)
 
 @app.route('/',methods=['GET'])
 def main():
-    return 'ciao gabriele'
-'''
-    user = {'username': 'Marco'}
-    list = [1,2,3,4,5]
-    return render_template('index.html', title='Home', user=user, list=list)
-'''
-'''
-@app.route('/pippo',methods=['GET'])
-def pippo():
-    #return 'ciao pippo'
+    return render_template('index.html', title='Home')
 
-    user = {'username': 'Marco'}
-    list = [1,2,3,4,5]
-    return render_template('index.html', title='Home', user=user, list=list)
-'''
+@app.route('/login',methods=['GET'])
+def pippo():
+    return render_template('login.html', title='Home')
+
+@app.route('/upload',methods=['POST'])
+def upload_data():
+    return render_template('login.html', title='Home')
 
 
 if __name__ == '__main__':
