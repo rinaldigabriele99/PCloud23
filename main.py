@@ -13,6 +13,10 @@ def main():
 #LOGIN
 @app.route('/login',methods=['GET'])
 def pippo():
+    return render_template('index-log.html', title='Home')
+
+@app.route('/login1',methods=['GET'])
+def pippo1():
     return render_template('login.html', title='Home')
 
 #-----------------------------------------------------------------------------------------------
@@ -29,25 +33,28 @@ def sensor_data():
 #aggiungo i valori che ricevo dal sensore al db firestore
 @app.route('/sensors/<s>',methods=['POST'])
 def add_data(s):
+    #print(str(request.values))
+    #return 'ok'
     db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
-    val = float(request.values['val'])
-    doc_ref= db.collection('sensors').document(s)
-    entity = doc_ref.get()
-    if entity.exists and 'values' in entity.to_dict():
-        v = entity.to_dict()['values']
-        v.append(val)
-        doc_ref.update({'values':v})
-    else:
-        doc_ref.set({'values':[val]})
-    return 'ok',200
+    chiavi = ['date', '%IronFeed', '%SilicaFeed', 'StarchFlow', 'AminaFlow', 'OrePulpFlow'
+              , 'OrePulppH', 'OrePulpDensity', 'FlotationColumn01AirFlow', 'FlotationColumn02AirFlow'
+              , 'FlotationColumn03AirFlow', 'FlotationColumn04AirFlow', 'FlotationColumn05AirFlow'
+              , 'FlotationColumn06AirFlow', 'FlotationColumn07AirFlow', 'FlotationColumn01Level'
+              , 'FlotationColumn02Level', 'FlotationColumn03Level', 'FlotationColumn04Level'
+              , 'FlotationColumn05Level', 'FlotationColumn06Level', 'FlotationColumn07Level', '%IronConcentrate'
+              , '%SilicaConcentrate']
+    for chiave in chiavi:
+        entity = db.collection('sensors').document(s)
+        entity.set(request.values)
+    return 'ok', 200
 
 #visualizzo i dati presenti sul db firestore
-@app.route('/sensors/<s>',methods=['GET'])
+@app.route('/sensors/<s>', methods=['GET'])
 def get_data(s):
     db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
     entity = db.collection('sensors').document(s).get()
     if entity.exists:
-        return json.dumps(entity.to_dict()['values']),200
+        return json.dumps(entity.to_dict()),200
     else:
         return 'sensor not found',404
 
