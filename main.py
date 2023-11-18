@@ -84,6 +84,10 @@ def fire():
         result += (f'{doc.id} --> {doc.to_dict()}<br>')
     return result
 
+@app.route('/userlogin',methods=['POST'])
+def userlogin():
+    return render_template ('index.html')
+
 #configurazione firestore - login (modalita per accedere al db con server in locale)
 db = firestore.Client.from_service_account_json('credentials.json')
 #configurazione firestore - login (modalita per accedere al db con server in remoto su google)
