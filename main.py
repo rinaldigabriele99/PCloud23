@@ -1,24 +1,96 @@
 import json
 from flask import Flask, render_template, request, redirect, url_for
 from google.cloud import firestore
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required, UserMixin
+from secret import secret_key
+
+# si definisce una classe utente, che rappresenta l'utente, username e parametri
+class User(UserMixin):
+    def __init__(self, username):
+        super().__init__()
+        self.id = username
+        self.username = username
+        self.par = {}
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = secret_key
 local = True
 
+login = LoginManager(app)
+login.login_view = '/static/login.html'
+
+# funzione che serve per creare un utente con i suoi parametri
+@login.user_loader
+def load_user(username):
+    db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
+    user = db.collection('utenti').document(username).get()
+    #if user.exists():
+        #return User(username)
+    #return None
+
+#----------------------------------------------------------------------
+#WEBAPP-MAIN
 @app.route('/',methods=['GET'])
 def main():
     return render_template('index.html', title='Home')
 
 #----------------------------------------------------------------------------------------------
 #LOGIN
-@app.route('/login',methods=['GET'])
-def pippo():
+@app.route('/login', methods=['POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('/main'))
+    username = request.values['u']
+    password = request.values['p']
+    db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
+    user = db.collection('utenti').document(username).get()
+    if user.exists and user.to_dict()['password'] == password:
+        login_user(User(username))
+        next_page = request.args.get('next')
+        if not next_page:
+            next_page = '/main'
+        return redirect(next_page)
+    return redirect('/static/login.html')
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect('/')
+
+#voglio avere un'univca funzione di aggiunta_utenti, con due modalità di accesso
+# se acceduta in modalità GET, restituisce la form in cui inserire i dati dell'utente
+# che chiamerà lo stesso metodo in modalità POST
+# bisogna creare una pagina html di registrazione nuovi utenti 'adduser.html'
+@app.route('/adduser', methods=['GET','POST'])
+@login_required
+def adduser():
+    if current_user.username == 'lorenzo':
+        if request.method == 'GET':
+            return redirect(url_for('/static/adduser.html'))
+        else:
+            username = request.values['u']
+            password = request.values['p']
+            db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
+            user = db.collection('utenti').document(username).get()
+            user.set({'username':username, 'passowrd':password})
+            return 'ok'
+    else:
+        return redirect ('/')
+    
+@app.route('/main', methods=['GET'])
+@login_required
+def homepageLog():
+    return render_template('index-log.html', title='Home')
+"""
+#LOGIN VECCHIO
+@app.route('/main', methods=['GET'])
+def homepageLog():
     return render_template('index-log.html', title='Home')
 
 @app.route('/login1',methods=['GET'])
 def pippo1():
     return render_template('login.html', title='Home')
-
+"""
 #-----------------------------------------------------------------------------------------------
 #FIRESTORE SENSORE
 #visualizzo in formato json i dati che manda il client_sensor
@@ -56,7 +128,7 @@ def get_data(s):
     if entity.exists:
         return json.dumps(entity.to_dict()),200
     else:
-        return 'sensor not found',404
+        return 'sensor not found', 404
 
 #visualizzo un grafico dal coi dati presenti sul db firestore
 @app.route('/graph/<s>',methods=['GET'])
@@ -73,6 +145,7 @@ def graph_data(s):
         return render_template('graph.html',sensor=s,data=json.dumps(d))
     else:
         return redirect(url_for('static', filename='sensor404.html'))
+    
 #-----------------------------------------------------------------------------------------------
 #FIRESTORE PERSONE
 #mi restituise il contenuto della collection persone

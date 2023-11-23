@@ -2,7 +2,6 @@ from requests import get, post
 import time
 import csv
 import json
-import pandas as pd
 
 base_url = 'http://localhost:8080'
 #base_url = 'https://mamei-test2-382313.appspot.com'
@@ -12,7 +11,6 @@ for i in range(10):
     print(sensor,'invio....')
     r = post(f'{base_url}/sensors/{sensor}',data={'val': i})
     time.sleep(1)
-
 '''
 
 with open('MiningProcess_Flotation_Plant_Database.csv', 'r') as file_csv:
@@ -48,5 +46,4 @@ with open('MiningProcess_Flotation_Plant_Database.csv', 'r') as file_csv:
 #json_data = json.dumps(data, indent=2)
 
 # Stampa il risultato
-
 print('done')
