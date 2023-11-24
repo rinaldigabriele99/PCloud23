@@ -93,7 +93,7 @@ def pippo1():
 """
 #-----------------------------------------------------------------------------------------------
 #FIRESTORE SENSORE
-#visualizzo in formato json i dati che manda il client_sensor
+#visualizzo in formato json i dati che manda il client_sensor presenti sul db firestore
 @app.route('/sensors',methods=['GET'])
 def sensor_data():
     db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
@@ -101,6 +101,16 @@ def sensor_data():
     for doc in db.collection('sensors').stream():
         s.append(doc.id)
     return json.dumps(s), 200
+
+#visualizzo in formato json i dati che manda il client_sensor presenti sul db firestore
+@app.route('/sensors/all',methods=['GET'])
+def sensor_data_firestore():
+    db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
+    data = {}
+    for doc in db.collection('sensors').stream():
+        data[doc.id] = doc.to_dict()
+    json_data = json.dumps(data, indent = 2)
+    return json_data, 200
 
 #aggiungo i valori che ricevo dal sensore al db firestore
 @app.route('/sensors/<s>',methods=['POST'])
@@ -120,13 +130,24 @@ def add_data(s):
         entity.set(request.values)
     return 'ok', 200
 
-#visualizzo i dati presenti sul db firestore
+#visualizzo i dati presenti sul db firestore per ogni riga (s)
 @app.route('/sensors/<s>', methods=['GET'])
 def get_data(s):
     db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
     entity = db.collection('sensors').document(s).get()
     if entity.exists:
-        return json.dumps(entity.to_dict()),200
+        return json.dumps(entity.to_dict()), 200
+    else:
+        return 'sensor not found', 404
+    
+#visualizzo i dati presenti sul db firestore in formato tabellare
+@app.route('/sensors', methods=['GET'])
+def get_data_firestore():
+    db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
+    entity = db.collection('sensors').get()
+    #print(json.dumps(entity.to_dict()))
+    if entity.exists:
+        return json.dumps(entity.to_dict()), 200
     else:
         return 'sensor not found', 404
 
@@ -142,7 +163,7 @@ def graph_data(s):
         for x in entity.to_dict()['values']:
             d.append([t,x])
             t+=1
-        return render_template('graph.html',sensor=s,data=json.dumps(d))
+        return render_template('graph.html', sensor=s, data=json.dumps(d))
     else:
         return redirect(url_for('static', filename='sensor404.html'))
     
