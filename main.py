@@ -167,7 +167,15 @@ def graph_data(s):
         return render_template('graph.html', sensor=s, data=json.dumps(d))
     else:
         return redirect(url_for('static', filename='sensor404.html'))
-    
+#-----------------------------------------------------------------------------------------------
+#ML MODEL
+@app.route('/predict', methods = ['POST'])
+def model_data():
+    d1 = request.values['d1']
+    d2 = request.values['d2']
+    d3 = request.values['d3']
+    return d1+d2+d3   
+   
 #-----------------------------------------------------------------------------------------------
 #FIRESTORE PERSONE
 #mi restituise il contenuto della collection persone
