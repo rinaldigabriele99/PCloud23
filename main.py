@@ -111,6 +111,7 @@ def sensor_data_firestore():
         data[doc.id] = doc.to_dict()
     json_data = json.dumps(data, indent = 2)
     return json_data, 200
+    #return render_template('index-log.html', json_data = json_data)
 
 #aggiungo i valori che ricevo dal sensore al db firestore
 @app.route('/sensors/<s>',methods=['POST'])
