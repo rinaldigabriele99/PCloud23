@@ -78,7 +78,7 @@ def adduser():
         return redirect ('/')
     
 @app.route('/main', methods=['GET'])
-@login_required
+#@login_required
 def homepageLog():
     return render_template('index-log.html', title='Home')
 """
@@ -106,9 +106,11 @@ def sensor_data():
 @app.route('/sensors/all',methods=['GET'])
 def sensor_data_firestore():
     db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
-    data = {}
+    data = []
     for doc in db.collection('sensors').stream():
-        data[doc.id] = doc.to_dict()
+        dict_values = doc.to_dict()
+        dict_values['Sensors'] = doc.id
+        data.append(dict_values)
     json_data = json.dumps(data, indent = 2)
     return json_data, 200
     #return render_template('index-log.html', json_data = json_data)
