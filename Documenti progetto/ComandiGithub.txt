@@ -7,3 +7,9 @@ Se creo nuovi file in locale e li voglio caricare sul sito GitHub devo fare i se
 git add * -> per aggiungere tutti i file nuovi che ho creato
 git commit -m '...' -> messaggio che spiega il commit che stiamo facendo per tenere traccia dell'aggiornamento che stiamo facendo
 git push -> per caricare tutto su GitHub
+
+
+Molto utile quando si vuole riorganizzare la cartella, quindi aggiornare il repository dei file che sono stati eliminati
+git add -u -->  aggiunge al cosiddetto "staging area" i cambiamenti apportati ai file che sono stati modificati o eliminati, 
+		ma non i nuovi file che sono stati creati.
+in pratica, git add -u è utile quando vuoi aggiungere al "staging area" solo le modifiche e le eliminazioni, ma non i nuovi file.
