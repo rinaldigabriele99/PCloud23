@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Homepage - PCloud</title>
+  
+    <!-- Aggiungi i link alle risorse di Bootstrap 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script> -->
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+   <!-- Google Chart -->
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <!-- DataTables JS -->
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Static script.js -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+    <!-- Static personalizzato.css 
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css_personalizzato.css') }}"> -->
+
+    <style>
+      .hidden {
+          display: none;
+      }
+    </style>
+
+    <!-- jQuery 
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
+    <!-- Google Chart 
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <!-- Static script.js
+    <script src="{{ url_for('static', filename='script.js') }}"></script> -->
+  </head>
+
+  <body>
+
+    <div class="position-absolute" style="top: 0; right: 0; margin-top: 10px; margin-right: 10px;">
+      <!--<a href = "static/login.html"><button type="button" class="btn btn-primary btn-lg btn-block">Login</button></a>-->
+      <!--<a href = "static/adduser.html"><button type="button" class="btn btn-success btn-lg float-left mt-2">Adduser</button></a>-->
+      <a href = "{{ url_for('adduser') }}"><button type="button" class="btn btn-success btn-lg float-left mt-2">Adduser</button></a>
+      <a href="{{ url_for('logout') }}" class="btn btn-dark btn-lg float-right mt-2">Logout</a>
+    </div>
+
+    <div class="container-fluid p-5 bg-primary text-white text-center">
+      <h1>Pervasive Computing e Cloud</h1>
+      <p>Visualizzazione e analisi dell'estrazione di minerali da una cava industriale</p> 
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="showDiv1">Sensor Data</a> 
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="showDiv2">Graph Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="showDiv3">Predict Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" id="showDiv4">Predict Facoltativo</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes 
+    <div class="tab-content"> -->
+    <div class = "">
+
+      <div id="div1" class="hidden">
+        <h2>Sensor Data</h2>
+        <hr>
+        <table id="dataTable" class="table table-sm table-striped table-bordered"></table>
+      </div>
+
+      <div id="div2" class="hidden ">
+        <h2>Grafici sui dati rilevati dai sensori</h2>
+        <hr>
+
+            <div class="row p-5">
+              <div class="col">
+                <span>
+                  <p>Max Value % Silica</p>
+                  <p id='max'></p>
+                </span>
+              </div>
+              <div class="col">
+                <span>
+                  <p>Min Value % Silica</p>
+                  <p id='min'></p>
+                </span>
+              </div>
+              <div class="col">
+                <span>
+                  <p>Mean Value % Silica</p>
+                  <p id='media'></p>
+                </span>
+              </div>
+            </div>
+
+        <hr>
+
+            <div id = "columnchart_material01" class="row p-5">
+            </div>
+        <hr>
+            <div id = "columnchart_material02" class="row p-5">
+            </div>
+        <hr>
+            <div  id = "columnchart_material03"class="row p-5">
+            </div>
+        <hr>
+            <div  id = "columnchart_material04" class="row p-5">
+            </div>
+        <hr>
+            <div class="row p-5">
+              <div id = "columnchart_material05" ></div>
+            </div>
+        <hr>
+      </div>
+
+      <div id="div3" class="hidden">
+        <h2>Compila la form ed effettua la predizione con un modello di Regressione Lineare</h2>
+        <hr>
+
+        <form method="post" action="{{ url_for('process_form') }}">
+              <div class="row mb-3">
+                <div class="col">
+                    <label for="% Iron Feed" class="form-label">% Iron Feed:</label>
+                    <input type="text" class="form-control" placeholder="Enter % Iron Feed" name="%Iron">
+                </div>
+                <div class="col">
+                    <label for="% Silica Feed" class="form-label">% Silica Feed:</label>
+                    <input type="text" class="form-control" placeholder="Enter % Silica Feed" name="%Sil">
+                </div>
+                <div class="col">
+                  <label for="Starch Flow" class="form-label">Starch Flow:</label>
+                  <input type="text" class="form-control" placeholder="Enter Starch Flow" name="Starch Flow">
+              </div>
+              </div>
+
+              <div class="row mb-3"> 
+                <div class="col">
+                    <label for="Amina Flow" class="form-label">Amina Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Amina Flow" name="Amina Flow">
+                </div>
+                <div class="col">
+                    <label for="Ore Pulp Flow" class="form-label">Ore Pulp Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Ore Pulp Flow" name="Ore Pulp Flow">
+                </div>
+                <div class="col">
+                  <label for="Ore Pulp pH" class="form-label">Ore Pulp pH:</label>
+                  <input type="text" class="form-control" placeholder="Enter Ore Pulp pH" name="Ore Pulp pH">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="Ore Pulp pH" class="form-label">Ore Pulp Density:</label>
+                  <input type="text" class="form-control" placeholder="Ore Pulp Density" name="Ore Pulp Density">
+                </div>
+                <div class="col">
+                    <label for="Flotation Column 01 Air Flow" class="form-label">Flotation Column 01 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 01 Air Flow" name="Flotation Column 01 Air Flow">
+                </div>
+                <div class="col">
+                    <label for="Flotation Column 02 Air Flow" class="form-label">Flotation Column 02 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 02 Air Flow" name="Flotation Column 02 Air Flow">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="Flotation Column 03 Air Flow" class="form-label">Flotation Column 03 Air Flow:</label>
+                  <input type="text" class="form-control" placeholder="Enter Flotation Column 03 Air Flow" name="Flotation Column 03 Air Flow">
+              </div>
+                <div class="col">
+                    <label for="Flotation Column 04 Air Flow" class="form-label">Flotation Column 04 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 04 Air Flow" name="Flotation Column 04 Air Flow">
+                </div>
+                <div class="col">
+                    <label for="Flotation Column 05 Air Flow" class="form-label">Flotation Column 05 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 05 Air Flow" name="Flotation Column 05 Air Flow">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="Flotation Column 06 Air Flow" class="form-label">Flotation Column 06 Air Flow:</label>
+                  <input type="text" class="form-control" placeholder="Enter Flotation Column 06 Air Flow" name="Flotation Column 06 Air Flow">
+              </div>
+                <div class="col">
+                    <label for="Flotation Column 07 Air Flow" class="form-label">Flotation Column 07 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 07 Air Flow" name="Flotation Column 07 Air Flow">
+                </div>
+                <div class="col">
+                  <label for="Flotation Column 01 Level" class="form-label">Flotation Column 01 Level:</label>
+                  <input type="text" class="form-control" placeholder="Enter Flotation Column 01 Level" name="Flotation Column 01 Level">
+                </div>
+              </div>
+            
+                <div class="row mb-3">
+                  <div class="col">
+                    <label for="Flotation Column 02 Level" class="form-label">Flotation Column 02 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 02 Level" name="Flotation Column 02 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 03 Level" class="form-label">Flotation Column 03 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 03 Level" name="Flotation Column 03 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 04 Level" class="form-label">Flotation Column 04 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 04 Level" name="Flotation Column 04 Level">
+                  </div>
+                </div>        
+            
+                <div class="row mb-3">
+                  <div class="col">
+                    <label for="Flotation Column 05 Level" class="form-label">Flotation Column 05 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 05 Level" name="Flotation Column 05 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 06 Level" class="form-label">Flotation Column 06 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 06 Level" name="Flotation Column 06 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 07 Level" class="form-label">Flotation Column 07 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 07 Level" name="Flotation Column 07 Level">
+                  </div>
+                  <div class="col">
+                    <label for="% Iron Concentrate" class="form-label">% Iron Concentrate:</label>
+                    <input type="text" class="form-control" placeholder="Enter % Iron Concentrate" name="% Iron Concentrate">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary btn-block">Prediction</button>
+                  </div>
+                  <div class="col">
+                    <h3>Prediction Result: {{data_prediction}}</h3>
+                  </div>
+                </div>
+            </div>
+          </form>
+      </div>
+
+      <div id="div4" class="hidden">
+        <h2>Compila la form ed effettua la predizione con i dati elencati per poter valutare la performance</h2>
+        <hr>     
+        
+        <p>Dati da usare per valutare la performance:</p>
+        <p>Data,% Iron Feed,% Silica Feed,Starch Flow,Amina Flow,Ore Pulp Flow,Ore Pulp pH,Ore Pulp Density,Flotation Column 01 Air Flow,Flotation Column 02 Air Flow,Flotation Column 03 Air Flow,Flotation Column 04 Air Flow,Flotation Column 05 Air Flow,Flotation Column 06 Air Flow,Flotation Column 07 Air Flow,Flotation Column 01 Level,Flotation Column 02 Level,Flotation Column 03 Level,Flotation Column 04 Level,Flotation Column 05 Level,Flotation Column 06 Level,Flotation Column 07 Level,% Iron Concentrate,% Silica Concentrate</p>
+        <p>1 ora dopo: 2017-07-15 00:00:00,"59,38","8,1","3048,97","586,568","398,277","9,80542","1,72575","305,64","302,641","298,715","300,99","297,24","300,331","305,973","407,719","420,253","400,138","417,728","346,601","346,133","359,425","64,62","2,83"</p>
+        <p>2 ore dopo: 2017-07-15 01:00:00,"56,77","14,37","3467,21","550,537","397,71","9,93201","1,66946","300,383","301,539","298,486","299,731","295,939","301,668","305,811","400,612","428,268","416,174","360,344","365,863","353,604","340,762","65,57","1,53"</p>
+        <p>12 ore dopo: 2017-07-15 11:00:00,"54,77","15,21","4067,95","518,181","401,283","10,4076","1,73297","300,365","304,247","300,005","298,678","299,483","305,562","291,657","506,005","504,471","511,487","467,067","465,214","443,574","432,765","65,92","1,42"</p>
+        <p>24 ore dopo: 2017-07-15 23:00:00,"50,58","20,21","3218,38","415,039","393,055","9,9547","1,70154","300,161","298,739","297,715","300,732","297,554","306,373","303,879","498,751","655,81","497,914","464,453","470,881","456,637","460,278","65,43","1,41"</p>
+        <p>1 settimana dopo: 2017-07-21 23:00:00,"51,74","23,27","3764,93","487,59","402,793","9,68342","1,68948","299,927","298,932","297,701","300,29","298,981","308,341","304,684","403,913","360,871","385,377","502,262","523,319","521,931","499,585","66,01","1,34"</p>
+        <p>2 settimane dopo: 2017-07-28 23:00:00,"57,46","10,8","3295,78","537,994","394,142","10,7374","1,69497","249,594","304,336","301,355","299,487","300,152","303,06","305,803","509,762","504,51","493,09","404,004","392,707","497,524","512,958","64,107867036","4,3415789474"</p>
+        <p>1 mese dopo: 2017-08-14 23:00:00,"48,81","25,31","3662,97","409,226","378,276","10,0864","1,70203","300,359","299,754","297,51","303,8747910448","290,97332","357,729","349,149","547,412","513,173","492,213","379,543","278,886","356,07","360,56","65,21","2,21"</p>
+
+        <hr> 
+
+                <div class="row mb-3">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary btn-block">Prediction</button>
+                  </div>
+                  <div class="col">
+                    <h4>Prediction Result: {{data_prediction}}</h4>
+                  </div>
+                  <div class="col">
+                    <h4>Real Data: {{data_prediction}}</h4>
+                  </div>
+                  <div class="col">
+                    <h4>Error: {{data_prediction}}</h4>
+                  </div>
+                </div>
+      </div>
+
+
+      <!-- Tab panes - DataTable 
+      <div class="tab-pane container-fluid p-5" id="table">
+        <h2>Sensor Data</h2>
+        <hr>
+        <table id="dataTable" class="table table-sm table-striped table-bordered">
+            
+        </table>
+      </div> -->
+
+      <!-- Tab panes - Graph 
+      <div class="tab-pane container d-block p-5" id="graph">
+
+        <h2>Grafici sui dati rilevati dai sensori</h2>
+        <hr>
+
+            <div class="row p-5">
+              <div class="col">
+                <span>
+                  <p>Max Value % Silica</p>
+                  <p id='max'></p>
+                </span>
+              </div>
+              <div class="col">
+                <span>
+                  <p>Min Value % Silica</p>
+                  <p id='min'></p>
+                </span>
+              </div>
+              <div class="col">
+                <span>
+                  <p>Mean Value % Silica</p>
+                  <p id='media'></p>
+                </span>
+              </div>
+            </div>
+            <hr>
+            <div class="row p-5">
+              <div id = "columnchart_material01" ></div>
+            </div>
+            <hr>
+            <div class="row p-5">
+              <div id = "columnchart_material02" ></div>
+            </div>
+            <hr>
+            <div class="row p-5">
+              <div id = "columnchart_material03" ></div>
+            </div>
+            <hr>
+            <div class="row p-5">
+              <div id = "columnchart_material04" ></div>
+            </div>
+            <hr>
+            <div class="row p-5">
+              <div id = "columnchart_material05" ></div>
+            </div>
+            <hr> 
+    
+      </div> -->
+
+      <!-- Tab panes - Predict
+      <div class="tab-pane container active p-5" id="predict">
+        <h2>Compila la form ed effettua la predizione con un modello di Regressione Lineare</h2>
+        <hr>
+
+        <form method="post" action="{{ url_for('process_form') }}">
+              <div class="row mb-3">
+                <div class="col">
+                    <label for="% Iron Feed" class="form-label">% Iron Feed:</label>
+                    <input type="text" class="form-control" placeholder="Enter % Iron Feed" name="%Iron">
+                </div>
+                <div class="col">
+                    <label for="% Silica Feed" class="form-label">% Silica Feed:</label>
+                    <input type="text" class="form-control" placeholder="Enter % Silica Feed" name="%Sil">
+                </div>
+                <div class="col">
+                  <label for="Starch Flow" class="form-label">Starch Flow:</label>
+                  <input type="text" class="form-control" placeholder="Enter Starch Flow" name="Starch Flow">
+              </div>
+              </div>
+
+              <div class="row mb-3"> 
+                <div class="col">
+                    <label for="Amina Flow" class="form-label">Amina Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Amina Flow" name="Amina Flow">
+                </div>
+                <div class="col">
+                    <label for="Ore Pulp Flow" class="form-label">Ore Pulp Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Ore Pulp Flow" name="Ore Pulp Flow">
+                </div>
+                <div class="col">
+                  <label for="Ore Pulp pH" class="form-label">Ore Pulp pH:</label>
+                  <input type="text" class="form-control" placeholder="Enter Ore Pulp pH" name="Ore Pulp pH">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="Ore Pulp pH" class="form-label">Ore Pulp Density:</label>
+                  <input type="text" class="form-control" placeholder="Ore Pulp Density" name="Ore Pulp Density">
+                </div>
+                <div class="col">
+                    <label for="Flotation Column 01 Air Flow" class="form-label">Flotation Column 01 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 01 Air Flow" name="Flotation Column 01 Air Flow">
+                </div>
+                <div class="col">
+                    <label for="Flotation Column 02 Air Flow" class="form-label">Flotation Column 02 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 02 Air Flow" name="Flotation Column 02 Air Flow">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="Flotation Column 03 Air Flow" class="form-label">Flotation Column 03 Air Flow:</label>
+                  <input type="text" class="form-control" placeholder="Enter Flotation Column 03 Air Flow" name="Flotation Column 03 Air Flow">
+              </div>
+                <div class="col">
+                    <label for="Flotation Column 04 Air Flow" class="form-label">Flotation Column 04 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 04 Air Flow" name="Flotation Column 04 Air Flow">
+                </div>
+                <div class="col">
+                    <label for="Flotation Column 05 Air Flow" class="form-label">Flotation Column 05 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 05 Air Flow" name="Flotation Column 05 Air Flow">
+                </div>
+              </div>
+
+              <div class="row mb-3">
+                <div class="col">
+                  <label for="Flotation Column 06 Air Flow" class="form-label">Flotation Column 06 Air Flow:</label>
+                  <input type="text" class="form-control" placeholder="Enter Flotation Column 06 Air Flow" name="Flotation Column 06 Air Flow">
+              </div>
+                <div class="col">
+                    <label for="Flotation Column 07 Air Flow" class="form-label">Flotation Column 07 Air Flow:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 07 Air Flow" name="Flotation Column 07 Air Flow">
+                </div>
+                <div class="col">
+                  <label for="Flotation Column 01 Level" class="form-label">Flotation Column 01 Level:</label>
+                  <input type="text" class="form-control" placeholder="Enter Flotation Column 01 Level" name="Flotation Column 01 Level">
+                </div>
+              </div>
+            
+                <div class="row mb-3">
+                  <div class="col">
+                    <label for="Flotation Column 02 Level" class="form-label">Flotation Column 02 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 02 Level" name="Flotation Column 02 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 03 Level" class="form-label">Flotation Column 03 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 03 Level" name="Flotation Column 03 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 04 Level" class="form-label">Flotation Column 04 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 04 Level" name="Flotation Column 04 Level">
+                  </div>
+                </div>        
+            
+                <div class="row mb-3">
+                  <div class="col">
+                    <label for="Flotation Column 05 Level" class="form-label">Flotation Column 05 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 05 Level" name="Flotation Column 05 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 06 Level" class="form-label">Flotation Column 06 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 06 Level" name="Flotation Column 06 Level">
+                  </div>
+                  <div class="col">
+                    <label for="Flotation Column 07 Level" class="form-label">Flotation Column 07 Level:</label>
+                    <input type="text" class="form-control" placeholder="Enter Flotation Column 07 Level" name="Flotation Column 07 Level">
+                  </div>
+                  <div class="col">
+                    <label for="% Iron Concentrate" class="form-label">% Iron Concentrate:</label>
+                    <input type="text" class="form-control" placeholder="Enter % Iron Concentrate" name="% Iron Concentrate">
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary btn-block">Prediction</button>
+                  </div>
+                  <div class="col">
+                    <h3>Prediction Result: {{data_prediction}}</h3>
+                  </div>
+                </div>
+            </div>
+          </form>
+      </div>
+
+      <!-- Tab panes - Predict Facoltativo
+      <div class="tab-pane container active p-5" id="predict-facoltativo">
+        <h2>Compila la form ed effettua la predizione con i dati elencati per poter valutare la performance</h2>
+        <hr>     
+        
+        <p>Dati da usare per valutare la performance:</p>
+        <p>Data,% Iron Feed,% Silica Feed,Starch Flow,Amina Flow,Ore Pulp Flow,Ore Pulp pH,Ore Pulp Density,Flotation Column 01 Air Flow,Flotation Column 02 Air Flow,Flotation Column 03 Air Flow,Flotation Column 04 Air Flow,Flotation Column 05 Air Flow,Flotation Column 06 Air Flow,Flotation Column 07 Air Flow,Flotation Column 01 Level,Flotation Column 02 Level,Flotation Column 03 Level,Flotation Column 04 Level,Flotation Column 05 Level,Flotation Column 06 Level,Flotation Column 07 Level,% Iron Concentrate,% Silica Concentrate</p>
+        <p>1 ora dopo: 2017-07-15 00:00:00,"59,38","8,1","3048,97","586,568","398,277","9,80542","1,72575","305,64","302,641","298,715","300,99","297,24","300,331","305,973","407,719","420,253","400,138","417,728","346,601","346,133","359,425","64,62","2,83"</p>
+        <p>2 ore dopo: 2017-07-15 01:00:00,"56,77","14,37","3467,21","550,537","397,71","9,93201","1,66946","300,383","301,539","298,486","299,731","295,939","301,668","305,811","400,612","428,268","416,174","360,344","365,863","353,604","340,762","65,57","1,53"</p>
+        <p>12 ore dopo: 2017-07-15 11:00:00,"54,77","15,21","4067,95","518,181","401,283","10,4076","1,73297","300,365","304,247","300,005","298,678","299,483","305,562","291,657","506,005","504,471","511,487","467,067","465,214","443,574","432,765","65,92","1,42"</p>
+        <p>24 ore dopo: 2017-07-15 23:00:00,"50,58","20,21","3218,38","415,039","393,055","9,9547","1,70154","300,161","298,739","297,715","300,732","297,554","306,373","303,879","498,751","655,81","497,914","464,453","470,881","456,637","460,278","65,43","1,41"</p>
+        <p>1 settimana dopo: 2017-07-21 23:00:00,"51,74","23,27","3764,93","487,59","402,793","9,68342","1,68948","299,927","298,932","297,701","300,29","298,981","308,341","304,684","403,913","360,871","385,377","502,262","523,319","521,931","499,585","66,01","1,34"</p>
+        <p>2 settimane dopo: 2017-07-28 23:00:00,"57,46","10,8","3295,78","537,994","394,142","10,7374","1,69497","249,594","304,336","301,355","299,487","300,152","303,06","305,803","509,762","504,51","493,09","404,004","392,707","497,524","512,958","64,107867036","4,3415789474"</p>
+        <p>1 mese dopo: 2017-08-14 23:00:00,"48,81","25,31","3662,97","409,226","378,276","10,0864","1,70203","300,359","299,754","297,51","303,8747910448","290,97332","357,729","349,149","547,412","513,173","492,213","379,543","278,886","356,07","360,56","65,21","2,21"</p>
+
+        <hr> 
+
+                <div class="row mb-3">
+                  <div class="col">
+                    <button type="submit" class="btn btn-primary btn-block">Prediction</button>
+                  </div>
+                  <div class="col">
+                    <h4>Prediction Result: {{data_prediction}}</h4>
+                  </div>
+                  <div class="col">
+                    <h4>Real Data: {{data_prediction}}</h4>
+                  </div>
+                  <div class="col">
+                    <h4>Error: {{data_prediction}}</h4>
+                  </div>
+                </div>
+
+      </div> -->
+    </div>
+
+
+
+
+
+    <!-- Tab panes
+    <div class="container-fluid p-5 text-center">
+      <div id="result"></div>
+    </div>
+    -->
+  </body>
+
+</html>

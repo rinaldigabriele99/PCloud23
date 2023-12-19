@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Login pagina</title>
+    <title>Login Page</title>
   
     <!-- Aggiungi i link alle risorse di Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -17,11 +17,38 @@
 
     <div class="container-fluid p-5 bg-primary text-white text-center">
       <h1>Pervasive Computing e Cloud</h1>
-      <p>Visualizzazione e analisi dell'estrazione di minerali da una cava industriale</p>
+      <p>Visualizzazione e analisi dell'estrazione di minirelai da una cava industriale</p> 
     </div>
 
     <!-- Aggiungi form per registrare nuovi utenti, action="/adduser" -->
-    <p>Pagina di registrazione nuovi utenti</p>
+    <div class="container mt-5">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              Pagina di registrazione nuovi utenti
+            </div>
+            <div class="card-body">
+              <form action="/adduser" method="post">
+                <div class="form-group">
+                  <label for="username">Username:</label>
+                  <input type="text" class="form-control" id="username" name="u" required>
+                </div>
+                <div class="form-group">
+                  <label for="password">Password:</label>
+                  <input type="password" class="form-control" id="password" name="p" required>
+                </div>
+                <div class="form-group"></div>
+                  <label for="email">Email:</label>
+                  <input type="email" class="form-control" id="email" name="e" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrati</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
   </body>
 

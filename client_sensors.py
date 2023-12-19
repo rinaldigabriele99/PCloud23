@@ -4,7 +4,7 @@ import csv
 import json
 
 base_url = 'http://localhost:8080'
-#base_url = 'https://mamei-test2-382313.appspot.com'
+#base_url = 'https://progettocloud23.ew.r.appspot.com'
 
 '''
 for i in range(10):
@@ -41,9 +41,4 @@ with open('MiningProcess_Flotation_Plant_Database.csv', 'r') as file_csv:
         #if conta == 10:
         #    break
 
-
-# Converti la lista di dizionari in formato JSON
-#json_data = json.dumps(data, indent=2)
-
-# Stampa il risultato
-print('done')
+#print('done')

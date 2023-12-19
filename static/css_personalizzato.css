@@ -1,0 +1,15 @@
+.chart-container {
+    text-align: center; /* Allinea il testo al centro (per centrare orizzontalmente) */
+    display: flex; /* Usa il layout flessibile */
+    flex-direction: column; /* Allinea gli elementi in una colonna (uno sotto l'altro) */
+    align-items: center; /* Allinea gli elementi al centro verticalmente */
+    justify-content: center; /* Allinea gli elementi al centro orizzontalmente */
+    height: 100vh; /* Altezza del contenitore al 100% dell'altezza della viewport */
+}
+
+/* Stile per ciascun grafico */
+.chart-container div {
+    margin-bottom: 20px; /* Aggiunge uno spazio tra i grafici */
+}
+
+/*#div2
