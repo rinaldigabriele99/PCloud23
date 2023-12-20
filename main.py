@@ -133,7 +133,7 @@ def sensor_data_firestore():
     return json_data, 200
 
 #aggiungo i valori che ricevo dal sensore in modalità http al db firestore
-@app.route('/sensors/<s>',methods=['POST'])
+@app.route('/sensors/<s>', methods=['POST'])
 def add_data(s):
     #print(str(request.values))
     db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
