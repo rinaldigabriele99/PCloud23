@@ -75,15 +75,15 @@
 
     <!-- Tab panes 
     <div class="tab-content"> -->
-    <div class = "container p-5">
+    <div class = "container-fluid p-5">
 
-      <div id="div1" class="hidden">
+      <div id="div1" class="hidden container-fluid">
         <h2>Sensor Data</h2>
         <hr>
         <table id="dataTable" class="table table-sm table-striped table-bordered"></table>
       </div>
 
-      <div id="div2" class="hidden ">
+      <div id="div2" class="hidden container">
         <h2>Grafici sui dati rilevati dai sensori</h2>
         <hr>
 
@@ -128,7 +128,7 @@
         <hr>
       </div>
 
-      <div id="div3" class="hidden">
+      <div id="div3" class="hidden container">
         <h2>Compila la form ed effettua la predizione con un modello di Regressione Lineare</h2>
         <hr>
 
@@ -260,10 +260,21 @@
         
         <p>Dati da usare per valutare la performance:</p>
         <p>Data,% Iron Feed,% Silica Feed,Starch Flow,Amina Flow,Ore Pulp Flow,Ore Pulp pH,Ore Pulp Density,Flotation Column 01 Air Flow,Flotation Column 02 Air Flow,Flotation Column 03 Air Flow,Flotation Column 04 Air Flow,Flotation Column 05 Air Flow,Flotation Column 06 Air Flow,Flotation Column 07 Air Flow,Flotation Column 01 Level,Flotation Column 02 Level,Flotation Column 03 Level,Flotation Column 04 Level,Flotation Column 05 Level,Flotation Column 06 Level,Flotation Column 07 Level,% Iron Concentrate,% Silica Concentrate</p>
-        <p>1 giorno dopo: 2017-07-15 ,"50,58","20,21","3218,38","415,039","393,055","9,9547","1,70154","300,161","298,739","297,715","300,732","297,554","306,373","303,879","498,751","655,81","497,914","464,453","470,881","456,637","460,278","65,43","1,41"</p>
-        <p>1 settimana dopo: 2017-07-21 ,"51,74","23,27","3764,93","487,59","402,793","9,68342","1,68948","299,927","298,932","297,701","300,29","298,981","308,341","304,684","403,913","360,871","385,377","502,262","523,319","521,931","499,585","66,01","1,34"</p>
-        <p>2 settimane dopo: 2017-07-28 ,"57,46","10,8","3295,78","537,994","394,142","10,7374","1,69497","249,594","304,336","301,355","299,487","300,152","303,06","305,803","509,762","504,51","493,09","404,004","392,707","497,524","512,958","64,107867036","4,3415789474"</p>
-        <p>1 mese dopo: 2017-08-14 ,"48,81","25,31","3662,97","409,226","378,276","10,0864","1,70203","300,359","299,754","297,51","303,8747910448","290,97332","357,729","349,149","547,412","513,173","492,213","379,543","278,886","356,07","360,56","65,21","2,21"</p>
+        <p>1 giorno dopo:</p>
+        <p>"2017-07-15","50,58","20,21","3218,38","415,039","393,055","9,9547","1,70154","300,161","298,739","297,715","300,732","297,554","306,373","303,879","498,751","655,81","497,914"</p>
+        <p>"464,453","470,881","456,637","460,278","65,43","1,41"</p>
+        <br>
+        <p>1 settimana dopo:</p>
+        <p>"2017-07-21","51,74","23,27","3764,93","487,59","402,793","9,68342","1,68948","299,927","298,932","297,701","300,29","298,981","308,341","304,684","403,913","360,871","385,377"</p>
+        <p>"502,262","523,319","521,931","499,585","66,01","1,34"</p>
+        <br>
+        <p>2 settimane dopo:</p>
+        <p>"2017-07-28","57,46","10,8","3295,78","537,994","394,142","10,7374","1,69497","249,594","304,336","301,355","299,487","300,152","303,06","305,803","509,762","504,51","493,09"</p>
+        <p>"404,004","392,707","497,524","512,958","64,107867036","4,3415789474"</p>
+        <br>
+        <p>1 mese dopo:</p>
+        <p>"2017-08-14" ,"48,81","25,31","3662,97","409,226","378,276","10,0864","1,70203","300,359","299,754","297,51","303,8747910448","290,97332","357,729","349,149","547,412","513,173"</p>
+        <p>"492,213","379,543","278,886","356,07","360,56","65,21","2,21"</p>
 
         <hr> 
 
