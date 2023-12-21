@@ -1,6 +1,8 @@
 flask
 flask-login
+google-cloud
 google-cloud-firestore
+google-cloud-pubsub
 joblib
 flask-mail
 numpy
