@@ -99,7 +99,7 @@ def adduser():
             email = request.values['e']
             db = firestore.Client.from_service_account_json('credentials.json') if local else firestore.Client()
             user = db.collection('utenti').document(username)
-            user.set({'username':username, 'passowrd':password, 'email':email})
+            user.set({'username':username, 'password':password, 'email':email})
             return redirect ('/main')
     else:
             return redirect ('/')
